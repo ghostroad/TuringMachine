@@ -3,8 +3,6 @@
 
 import sys, time
 
-if len(sys.argv) != 3:
-    raise RuntimeError("Usage: python TM.py <program.txt> \"<tape input>\"")
 
 ALPHABET = ["0", "1", " ", "#"]
 HALT_STATE = 0
@@ -102,25 +100,29 @@ class TuringMachine:
         for i in range(steps):
             self.run_single_step()
 
-parser = Parser()
-parser.parse(sys.argv[1])
-machine = TuringMachine(list(sys.argv[2]), parser.transition_function)
 
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        raise RuntimeError("Usage: python TM.py <program.txt> \"<tape input>\"")
 
-while True:
-    num_steps = raw_input("Number of steps to run (q to quit, 0 to run till termination): ")
-    if num_steps == "q":
-        break
-    try:
-        num_steps = int(num_steps)
-        if num_steps < 0:
-            raise ValueError
-        if num_steps == 0:
-            machine.run()
-        else:     
-            machine.run_some(num_steps)
-    except ValueError, e:
-        print "Invalid input"
+    parser = Parser()
+    parser.parse(sys.argv[1])
+    machine = TuringMachine(list(sys.argv[2]), parser.transition_function)
+    
+    while True:
+        num_steps = raw_input("Number of steps to run (q to quit, 0 to run till termination): ")
+        if num_steps == "q":
+            break
+        try:
+            num_steps = int(num_steps)
+            if num_steps < 0:
+                raise ValueError
+            if num_steps == 0:
+                machine.run()
+            else:     
+                machine.run_some(num_steps)
+        except ValueError, e:
+            print "Invalid input"
     
 
 
