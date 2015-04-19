@@ -104,13 +104,18 @@ class TuringMachine:
 if __name__ == '__main__':
     if len(sys.argv) != 3:
         raise RuntimeError("Usage: python TM.py <program.txt> \"<tape input>\"")
+    program_file = sys.argv[1]
+    tape_input = sys.argv[2]
+    if not all(symbol in ALPHABET for symbol in tape_input):
+        raise ValueError("Invalid tape input")
 
     parser = Parser()
-    parser.parse(sys.argv[1])
-    machine = TuringMachine(list(sys.argv[2]), parser.transition_function)
+    parser.parse(program_file)
+
+    machine = TuringMachine(list(tape_input), parser.transition_function)
     
     while True:
-        num_steps = raw_input("Number of steps to run (q to quit, 0 to run till termination): ")
+        num_steps = raw_input("Number of steps to run (q to quit, 0 to run till halted): ")
         if num_steps == "q":
             break
         try:
